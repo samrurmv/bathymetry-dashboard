@@ -105,9 +105,9 @@ time_range = st.sidebar.slider(
 # Apply filters
 df_filtered = df[
     (df["vessel_id"].isin(selected_vessels)) &
-    (df["category"].isin(selected_hazards)) &
-    (df["timestamp"] >= time_range[0]) &
-    (df["timestamp"] <= time_range[1])
+    (df["category"].isin(selected_hazards)) #&
+    #(df["timestamp"] >= time_range[0]) &
+    #(df["timestamp"] <= time_range[1])
 ]
 
 # ----------------------------
