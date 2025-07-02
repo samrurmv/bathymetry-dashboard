@@ -96,28 +96,14 @@ selected_vessels = st.sidebar.multiselect("Vessel(s)", vessel_options, default=v
 hazard_options = df["category"].unique().tolist()
 selected_hazards = st.sidebar.multiselect("Hazards", hazard_options, default=hazard_options)
 
-min_time, max_time = df["timestamp"].min().to_pydatetime(), df["timestamp"].max().to_pydatetime()
-time_range = st.sidebar.slider(
-    "Time Range", min_value=min_time, max_value=max_time,
-    value=(min_time, max_time), format="YYYY-MM-DD HH:mm"
-)
-
-# Apply filters
+# Apply filters (NO time filter)
 df_filtered = df[
     (df["vessel_id"].isin(selected_vessels)) &
-    (df["category"].isin(selected_hazards)) #&
-    #(df["timestamp"] >= time_range[0]) &
-    #(df["timestamp"] <= time_range[1])
+    (df["category"].isin(selected_hazards))
 ]
 
 # ----------------------------
-# Data Display
-# ----------------------------
-st.subheader("📋 Filtered Bathymetry Data")
-st.dataframe(df_filtered[["vessel_id", "latitude", "longitude", "depth", "category", "symbol", "timestamp"]])
-
-# ----------------------------
-# Map Display
+# Map Display (first)
 # ----------------------------
 st.subheader("🗺️ Hazard Map")
 
@@ -148,6 +134,12 @@ tooltip = {
 }
 
 st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state, tooltip=tooltip))
+
+# ----------------------------
+# Data Display (second)
+# ----------------------------
+st.subheader("📋 Filtered Bathymetry Data")
+st.dataframe(df_filtered[["vessel_id", "latitude", "longitude", "depth", "category", "symbol", "timestamp"]])
 
 # ----------------------------
 # Export Options
